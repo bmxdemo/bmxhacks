@@ -5,7 +5,161 @@ import matplotlib.pyplot as plt
 import scipy.linalg as la
 import pandas as pd
 
-d=bmx.BMXFile('data/161130_1800.tone.data')
+filelist="""161130_1657.tone.data
+161130_1800.tone.data
+161130_1900.tone.data
+161130_2000.tone.data
+161130_2100.tone.data
+161130_2200.tone.data
+161130_2300.tone.data
+161201_0000.tone.data
+161201_0100.tone.data
+161201_0200.tone.data
+161201_0300.tone.data
+161201_0400.tone.data
+161201_0500.tone.data
+161201_0600.tone.data
+161201_0700.tone.data
+161201_0800.tone.data
+161201_0900.tone.data
+161201_1000.tone.data
+161201_1100.tone.data
+161201_1200.tone.data
+161201_1300.tone.data
+161201_1400.tone.data
+161201_1500.tone.data
+161201_1600.tone.data
+161201_1700.tone.data
+161201_1800.tone.data
+161201_1900.tone.data
+161201_2000.tone.data
+161201_2100.tone.data
+161201_2200.tone.data
+161201_2300.tone.data
+161202_0000.tone.data
+161202_0100.tone.data
+161202_0200.tone.data
+161202_0300.tone.data
+161202_0400.tone.data
+161202_0500.tone.data
+161202_0600.tone.data
+161202_0700.tone.data
+161202_0800.tone.data
+161202_0900.tone.data
+161202_1000.tone.data
+161202_1100.tone.data
+161202_1200.tone.data
+161202_1300.tone.data
+161202_1400.tone.data
+161202_1500.tone.data
+161202_1600.tone.data
+161202_1700.tone.data
+161202_1800.tone.data
+161202_1900.tone.data
+161202_2000.tone.data
+161202_2100.tone.data
+161202_2200.tone.data
+161202_2300.tone.data
+161203_0000.tone.data
+161203_0100.tone.data
+161203_0200.tone.data
+161203_0300.tone.data
+161203_0400.tone.data
+161203_0500.tone.data
+161203_0600.tone.data
+161203_0700.tone.data
+161203_0800.tone.data
+161203_0900.tone.data
+161203_1000.tone.data
+161203_1100.tone.data
+161203_1200.tone.data
+161203_1300.tone.data
+161203_1400.tone.data
+161203_1500.tone.data
+161203_1600.tone.data
+161203_1700.tone.data
+161203_1800.tone.data
+161203_1900.tone.data
+161203_2000.tone.data
+161203_2100.tone.data
+161203_2200.tone.data
+161203_2300.tone.data
+161204_0000.tone.data
+161204_0100.tone.data
+161204_0200.tone.data
+161204_0300.tone.data
+161204_0400.tone.data
+161204_0500.tone.data
+161204_0600.tone.data
+161204_0700.tone.data
+161204_0731.tone.data
+161204_0900.tone.data
+161204_1000.tone.data
+161204_1100.tone.data
+161204_1200.tone.data
+161204_1300.tone.data
+161204_1400.tone.data
+161204_1500.tone.data
+161204_1600.tone.data
+161204_1700.tone.data
+161204_1800.tone.data
+161204_1900.tone.data
+161204_2000.tone.data
+161204_2100.tone.data
+161204_2200.tone.data
+161204_2300.tone.data
+161205_0000.tone.data
+161205_0100.tone.data
+161205_0200.tone.data
+161205_0300.tone.data
+161205_0400.tone.data
+161205_0500.tone.data
+161205_0600.tone.data
+161205_0700.tone.data
+161205_0800.tone.data
+161205_0900.tone.data
+161205_1000.tone.data""".split("\n")
+
+
+sw=0.0
+#filelist=filelist[0:2]
+for fname in filelist:
+    d=bmx.BMXFile('../bmxdaq/data/'+fname)
+    da=d.data['chan1_0']
+    da=np.log(da)-35.14
+    da[:,1638]=0.0
+    w=len(da)
+    cov=np.cov(da,rowvar=False,bias=True)
+    cmean=da.mean(axis=0)
+    print (cov[0,0])
+    cov=cov+np.outer(cmean,cmean)
+    print (cov[0,0],cmean[0])
+    print (cmean[:10])
+    if sw==0:
+        mean=cmean*w
+        tcov=cov*w
+        sw=w
+    else:
+        mean+=cmean*w        
+        tcov+=cov*w
+        sw+=w
+
+mean/=sw
+tcov/=sw
+print (tcov[0,0])
+tcov-=np.outer(mean,mean)
+print (tcov[0,0],mean[0])
+
+print(tcov[:4,:4])
+
+print("doing eigen")
+evl,evc=la.eig(tcov)
+print(evl[:10])
+np.save('evl.dat',evl)
+np.save('evc.dat',evc)
+print("done.")
+
+"""
 
 mxf=[]
 mx=[]
@@ -101,3 +255,4 @@ plt.show()
 
 
 
+"""
