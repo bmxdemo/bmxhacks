@@ -131,10 +131,9 @@ for fname in filelist:
     w=len(da)
     cov=np.cov(da,rowvar=False,bias=True)
     cmean=da.mean(axis=0)
-    print (cov[0,0])
     cov=cov+np.outer(cmean,cmean)
-    print (cov[0,0],cmean[0])
-    print (cmean[:10])
+    ###print (cov[0,0],cmean[0])
+    ###print (cmean[:10])
     if sw==0:
         mean=cmean*w
         tcov=cov*w
@@ -145,6 +144,7 @@ for fname in filelist:
         sw+=w
 
 mean/=sw
+np.save('mean.dat',mean+35.14)
 tcov/=sw
 print (tcov[0,0])
 tcov-=np.outer(mean,mean)
