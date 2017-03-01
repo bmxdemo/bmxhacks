@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 import bmxdata as bmx
 import matplotlib.pyplot as plt
 import numpy as np
@@ -7,8 +7,6 @@ import sys
 for fn in sys.argv[1:]:
 
     d=bmx.BMXFile(fn)
-    d.freq-=250.0
-    d.freq*=1000
 
     def rnm(x, N):
         return np.convolve(x, np.ones((N,))/N,mode='valid')[(N-1):]
@@ -21,12 +19,14 @@ for fn in sys.argv[1:]:
             plt.xlabel('delta freq [kHz] ' + n)
     if True:
         plt.figure(figsize=(10,8))
-        for i,n in enumerate(d.names):
+        for i,n in enumerate(d.names[:-1]):
+            print i,n
             mxf=[]
             mx=[]
             for line in d.data[n]:
+                #print line
                 i=abs(line).argmax()
-                mxf.append(d.freq[i])
+                mxf.append(i)
                 #print (line.sum(), line[i-20:i+20].sum())
                 #plt.plot(range(len(line)),line)
                 #plt.show()
@@ -37,6 +37,7 @@ for fn in sys.argv[1:]:
             mx=np.array(mx)
             mx/=mx[0]
             plt.plot(rnm(x,50),rnm(mx,50),label=n)
+            #plt.semilogy()
             plt.subplot(2,1,2)
             plt.plot(rnm(x,50),rnm(mxf,50),label=n)
         plt.subplot(2,1,1)
