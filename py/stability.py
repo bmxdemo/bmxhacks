@@ -52,6 +52,12 @@ ratx=procx(a1,b1,a2,b2)
 a1l=proc(a1,np.ones(len(a1)))
 a12l=proc(a1,a2)
 
+plt.plot(a1l)
+a1l-=ratx * (a1l*ratx).sum()/(ratx**2).sum()
+a12l-=ratx * (a12l*ratx).sum()/(ratx**2).sum()
+rat1-=ratx * (rat1*ratx).sum()/(ratx**2).sum()
+
+
 
 
 def plotps (ar,l):
