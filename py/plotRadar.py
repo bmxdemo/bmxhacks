@@ -8,7 +8,7 @@ import bmxdata as bmx
 
 
 def main():
-    fname="/gpfs01/astro/workarea/anze/bmxdata/170719_first/flight_rfi_20_4_170719_0300.data"
+    fname="/gpfs01/astro/workarea/bmxdata/170719_first/flight_rfi_20_4_170719_0300.data"
     b=bmx.BMXFile(fname)
     b.getRadar()
     t=0
